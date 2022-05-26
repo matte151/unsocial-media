@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./LoginPage.css";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import { Button, Form, Grid, Header, Image, Segment, Message } from 'semantic-ui-react'
+import { Button, Form, Grid, Header, Image, Segment, Message, Container } from 'semantic-ui-react'
 import userService from "../../utils/userService";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -76,6 +76,7 @@ export default function LoginPage(props) {
               </Button>
             
           </Form>
+          <Header as='h5' color="blue">Forgot password?</Header>
           <br></br>
           <hr></hr>
           <br></br>
