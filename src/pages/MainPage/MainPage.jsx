@@ -47,6 +47,19 @@ export default function Main({user, handleLogout}){
         getPosts();
     }, []);
 
+async function removePost(postId){
+    console.log("handlePost was finished, we got here removePost",postId," <<<< PostId")
+    try {
+        const data = await postsAPI.removePost(postId);
+        console.log("removal>>>>>>>",data,"<<<< removal")
+        getPosts()
+    } catch (err) {
+        console.log(err)
+        setError(err.message)
+    }
+}
+
+
     if(error) {
         console.log("This here be ye error!!!", error)
         return (
@@ -81,7 +94,8 @@ export default function Main({user, handleLogout}){
                                 <MainFeed               
                                     posts={posts}
                                     loading={loading}
-                                    user={user}/>
+                                    user={user}
+                                    removePost={removePost}/>
                             </Container>
                         </Grid.Column>
                     </Grid.Row>

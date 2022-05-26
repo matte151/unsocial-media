@@ -1,8 +1,8 @@
 import React from "react";
-import { Card, Icon, Image } from "semantic-ui-react";
+import { Card, Container, Icon, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
-function PostCard({ post, user }) {
+function PostCard({ post, user, removePost }) {
 
 function handleLikes() {
     // do some stuff... Specifically if they click the likes button pop them up a message maybe?
@@ -10,14 +10,29 @@ function handleLikes() {
 
     const likesValue = Math.floor(Math.random() * (1000000) + 1)
 
+    function handleDelete(){
+        console.log("Button was clicked, we got here handleDelete",post._id,"ID to be deleted")
+        removePost(post._id)
+    }
 
 return (
     <Card key={post._id} raised>
         <Card.Content textAlign="left">
-            <Image size="large" avatar src={post.user.photoUrl?post.user.photoUrl:"https://i.imgur.com/wkAUgGb.png"} />
-            {post.user.username}
+            <Container textAlign='right'>
+                <Icon
+                align="right"
+                name={"x"}
+                size="large"
+                color="red"
+                onClick={handleDelete}
+                />
+            </Container>
+            <Container textAlign='left'>
+                <Image textAlign="left" size="large" avatar src={post.user.photoUrl?post.user.photoUrl:"https://i.imgur.com/wkAUgGb.png"} />
+                {post.user.username}
+            </Container>
+
         </Card.Content>
-    
     <Image src={`${post.photoUrl}`} wrapped ui={false} />
     <Card.Content>
       <Card.Description>{post.caption}</Card.Description>
