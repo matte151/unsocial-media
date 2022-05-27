@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 
-const postSchema = new mongoose.Schema({
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User'}, // referencing a model
+const friendSchema = new mongoose.Schema({
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    name: String,
     photoUrl: String,
-    caption: String,
     computerGames: {type: Number,},
     cooking: {type: Number,},
     discussion: {type: Number,},
@@ -13,7 +13,7 @@ const postSchema = new mongoose.Schema({
     sports: {type: Number,},
     trivia: {type: Number,},
     TTRPG: {type: Number,},
-  })
- 
 
-module.exports = mongoose.model('Post', postSchema);
+})
+
+module.exports = mongoose.model('Friend', friendSchema);

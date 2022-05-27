@@ -3,7 +3,7 @@ import { Card, Dimmer, Segment, Image, Loader  } from 'semantic-ui-react'
 import PostCard from './PostCard/PostCard';
 
 
-export default function PostFeed({posts, isProfile, loading, user, removePost }){
+export default function MainFeed({posts, isProfile, loading, user, removePost }){
 
     return (
         <Card.Group itemsPerRow={1} stackable>

@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect  } from "react";
 import "./MainPage.css";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
-import { Button, Grid, Header, Image, Segment, Message, Container } from 'semantic-ui-react'
+import { Button, Grid, Header, Image, Segment, Message, Container, Card } from 'semantic-ui-react'
 import { useNavigate, Link } from "react-router-dom";
 import PageHeader from "../../components/Header/Header";
 import MainFeed from "../../components/MainFeed/MainFeed"
+import FriendBar from "../../components/FriendBar/FriendBar"
 import AddPostForm from "../../components/AddPostForm/AddPostForm"
-import * as postsAPI from "../../utils/postAPI";
+import AddFriendForm from "../../components/AddFriendForm/AddFriendForm"
+import * as postAPI from "../../utils/postAPI";
+import * as friendAPI from "../../utils/friendAPI"
 
 
 export default function Main({user, handleLogout}){
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [friends, setFriends] = useState([]);
 
     function clickLike(){
     //pop up a message that says:
@@ -23,7 +27,7 @@ export default function Main({user, handleLogout}){
     async function handleAddPost(post) {
         try {
             setLoading(true);
-            const data = await postsAPI.create(post);
+            const data = await postAPI.create(post);
             setPosts([data.post, ...posts]);
             setLoading(false);
         } catch (err) {
@@ -34,7 +38,7 @@ export default function Main({user, handleLogout}){
 
     async function getPosts() {
         try {
-            const data = await postsAPI.getAll();
+            const data = await postAPI.getAll();
             setPosts([...data.posts]);
             setLoading(false);
         } catch (err) {
@@ -50,7 +54,7 @@ export default function Main({user, handleLogout}){
 async function removePost(postId){
     console.log("handlePost was finished, we got here removePost",postId," <<<< PostId")
     try {
-        const data = await postsAPI.removePost(postId);
+        const data = await postAPI.removePost(postId);
         console.log("removal>>>>>>>",data,"<<<< removal")
         getPosts()
     } catch (err) {
@@ -58,6 +62,34 @@ async function removePost(postId){
         setError(err.message)
     }
 }
+
+
+async function handleAddFriend(friend) {
+    try {
+        setLoading(true);
+        const data = await friendAPI.create(friend);
+        setFriends([data.friend, ...friends]);
+        setLoading(false);
+    } catch (err) {
+        console.log(err, " handleAddPost Error");
+        setError(err.message)
+    }
+}
+
+async function getFriends() {
+    try {
+        const data = await friendAPI.getAll();
+        setFriends([...data.friends]);
+        setLoading(false);
+    } catch (err) {
+        console.log(err, " getFriends error");
+        setError(err.message)
+    }
+}
+
+useLayoutEffect (() => {
+    getFriends();
+}, []);
 
 
     if(error) {
@@ -72,13 +104,23 @@ async function removePost(postId){
     return (
         <Grid centered>
             <Grid.Row>
-                <Grid.Column>
+                <Grid.Column width={16}>
                     <PageHeader handleLogout={handleLogout} user={user}/>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row>
                 <Grid.Column width={3}>
-                    <Container>FRIENDS AREA</Container>
+                   <Grid.Row>
+                       <AddFriendForm handleAddFriend={handleAddFriend} />
+                   </Grid.Row>
+                   <Grid.Row>
+                    <Container>
+                        <FriendBar 
+                            friends={friends}
+                            loading={loading}
+                            user={user} />
+                    </Container>
+                    </Grid.Row>
                 </Grid.Column>
                 <Grid.Column width={10}>
                     <Grid.Row>

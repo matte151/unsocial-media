@@ -1,4 +1,4 @@
-const Post = require('../models/post');
+const Friend = require('../models/friend');
 const S3 = require('aws-sdk/clients/s3');
 const { v4: uuidv4 } = require('uuid');
 
@@ -7,7 +7,7 @@ const s3 = new S3();
 module.exports = {
     create,
     index,
-    delete: deletePost
+
 }
 
 function create(req, res){
@@ -16,12 +16,12 @@ function create(req, res){
         const filePath = `${uuidv4()}/${req.file.originalname}`
         const params = {Bucket: process.env.BUCKET_NAME, Key: filePath, Body: req.file.buffer};
         s3.upload(params, async function(err, data){
-			console.log(err, 'Creating Post AWS ERROR')
-            const post = await Post.create({caption: req.body.caption, user: req.user, photoUrl: data.Location, computerGames: req.body.computerGames
+			console.log(err, 'Creating Friend AWS ERROR')
+            const friend = await Friend.create({user: req.user, name: req.body.name, photoUrl: data.Location, computerGames: req.body.computerGames
                 , cooking: req.body.cooking, discussion: req.body.discussion, outdoors: req.body.outdoors, restaurants: req.body.restaurants, sports: req.body.sports
                 , trivia: req.body.trivia, TTRPG: req.body.TTRPG});
-			await post.populate('user');
-            res.status(201).json({post: post})
+			await friend.populate('user');
+            res.status(201).json({friend: friend})
         })
 
     } catch(err){
@@ -32,20 +32,9 @@ function create(req, res){
 
 async function index(req, res){
     try {
-        const posts = await Post.find({}).populate('user').exec()
-        res.status(200).json({posts})
+        const friends = await Friend.find({}).populate('user').exec()
+        res.status(200).json({friends})
     } catch(err){
 
-    }
-}
-
-async function deletePost(req, res){
-    try {
-        const post = await Post.findOne({'posts.id': req.params.id})
-        post.remove()
-        console.log("deleted this>>>>",post,"<<< GONE!")
-        res.json({data:'post removed'})
-    } catch(err){
-        res.status(400).json({err})
     }
 }

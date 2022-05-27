@@ -2,7 +2,7 @@ import React from "react";
 import { Card, Container, Icon, Image } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 
-function PostCard({ post, user, removePost }) {
+export default function PostCard({ post, user, removePost }) {
 
 function handleLikes() {
     // do some stuff... Specifically if they click the likes button pop them up a message maybe?
@@ -16,7 +16,7 @@ function handleLikes() {
     }
 
 return (
-    <Card key={post._id} raised>
+    <Card key={post._id} raised style={{ maxWidth: 700 }} centered>
         <Card.Content textAlign="left">
             <Container textAlign='right'>
                 <Icon
@@ -51,5 +51,3 @@ return (
 
 
 }
-
-export default PostCard;
