@@ -9,6 +9,7 @@ const upload = multer();
 router.post('/', upload.single('photo'), friendsCtrl.create);
 router.get('/', friendsCtrl.index)
 
+
 /*---------- Protected Routes ----------*/
 
 module.exports = router;
