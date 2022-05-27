@@ -6,6 +6,7 @@ import { useNavigate, Link } from "react-router-dom";
 import PageHeader from "../../components/Header/Header";
 import MainFeed from "../../components/MainFeed/MainFeed"
 import FriendBar from "../../components/FriendBar/FriendBar"
+import SuggestedActivityBar from "../../components/SuggestedActivityBar/SuggestedActivityBar"
 import AddPostForm from "../../components/AddPostForm/AddPostForm"
 import AddFriendForm from "../../components/AddFriendForm/AddFriendForm"
 import * as postAPI from "../../utils/postAPI";
@@ -17,6 +18,7 @@ export default function Main({user, handleLogout}){
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
     const [friends, setFriends] = useState([]);
+    const [suggestions, setSuggestions] = useState([])
 
     function clickLike(){
     //pop up a message that says:
@@ -87,6 +89,10 @@ async function getFriends() {
     }
 }
 
+async function getSuggestions() {
+
+}
+
 useLayoutEffect (() => {
     getFriends();
 }, []);
@@ -143,7 +149,14 @@ useLayoutEffect (() => {
                     </Grid.Row>
                 </Grid.Column>
                 <Grid.Column width={3}>
-                    <Container>Suggested Activities</Container>
+                    <Container>
+                        <SuggestedActivityBar 
+                        friends={friends}
+                        loading={loading}
+                        user={user}
+                        suggestions={suggestions}
+                        />
+                        </Container>
                 </Grid.Column>
             </Grid.Row>
 
